@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-#import <GoogleMaps/GoogleMaps.h>
 
 @interface ViewController ()
 
@@ -28,6 +27,7 @@
                                                                  zoom:16];
     mapView_ = [GMSMapView mapWithFrame:CGRectZero camera:camera];
     mapView_.myLocationEnabled = YES;
+    mapView_.delegate = self;
     self.view = mapView_;
     
     // Creates a marker in the center of the map.
@@ -36,11 +36,22 @@
     marker.title = @"Tokyo";
     marker.snippet = @"Japna";
     marker.map = mapView_;
+    
+    GMSMarker *marker2 = [[GMSMarker alloc] init];
+    marker2.position = CLLocationCoordinate2DMake(35.697128, 139.768383);
+    marker2.title = @"Kanda";
+    marker2.snippet = @"Japna";
+    marker2.map = mapView_;
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(BOOL)mapView:(GMSMapView *)mapView didTapMarker:(GMSMarker *)marker{
+    [mapView_ animateToLocation:marker.position];
+    return NO;
 }
 
 @end
